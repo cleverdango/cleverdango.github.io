@@ -6,17 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="1. 初始化一个angular项目1ng new angular-http-demo 2. 在angular中引入httpclient模块123456789101112131415161718192021// app.module.tsimport &amp;#123; BrowserModule &amp;#125; from &apos;@angular/platform-browser&apos;;import &amp;#123;">
+    <meta name="description" content="在Angular的官方教程中http请求的部分默认推荐的Rxjs的写法，但是能够学懂Rxjs又是另一个学习成本，如何利用已知的Promise和async函数来发起http请求是本文的主要内容  // todo 内容还需修订 1. 初始化一个angular项目1ng new angular-http-demo 2. 在angular中引入httpclient模块123456789101112131">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何在Angular中使用async&#x2F;await发起http请求">
 <meta property="og:url" content="https://cleverdango.github.io/2018/10/28/如何在Angular中使用async-await发起http请求/index.html">
 <meta property="og:site_name" content="团子的博客">
-<meta property="og:description" content="1. 初始化一个angular项目1ng new angular-http-demo 2. 在angular中引入httpclient模块123456789101112131415161718192021// app.module.tsimport &amp;#123; BrowserModule &amp;#125; from &apos;@angular/platform-browser&apos;;import &amp;#123;">
+<meta property="og:description" content="在Angular的官方教程中http请求的部分默认推荐的Rxjs的写法，但是能够学懂Rxjs又是另一个学习成本，如何利用已知的Promise和async函数来发起http请求是本文的主要内容  // todo 内容还需修订 1. 初始化一个angular项目1ng new angular-http-demo 2. 在angular中引入httpclient模块123456789101112131">
 <meta property="og:locale" content="Chinese">
-<meta property="og:updated_time" content="2018-10-31T16:43:54.917Z">
+<meta property="og:updated_time" content="2018-10-31T17:01:59.151Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何在Angular中使用async&#x2F;await发起http请求">
-<meta name="twitter:description" content="1. 初始化一个angular项目1ng new angular-http-demo 2. 在angular中引入httpclient模块123456789101112131415161718192021// app.module.tsimport &amp;#123; BrowserModule &amp;#125; from &apos;@angular/platform-browser&apos;;import &amp;#123;">
+<meta name="twitter:description" content="在Angular的官方教程中http请求的部分默认推荐的Rxjs的写法，但是能够学懂Rxjs又是另一个学习成本，如何利用已知的Promise和async函数来发起http请求是本文的主要内容  // todo 内容还需修订 1. 初始化一个angular项目1ng new angular-http-demo 2. 在angular中引入httpclient模块123456789101112131">
     
     
         
@@ -130,7 +130,11 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h2 id="1-初始化一个angular项目"><a href="#1-初始化一个angular项目" class="headerlink" title="1. 初始化一个angular项目"></a>1. 初始化一个angular项目</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng new angular-http-demo</span><br></pre></td></tr></table></figure>
+    <blockquote>
+<p>在Angular的官方教程中http请求的部分默认推荐的Rxjs的写法，但是能够学懂Rxjs又是另一个学习成本，如何利用已知的Promise和async函数来发起http请求是本文的主要内容</p>
+</blockquote>
+<p>// todo 内容还需修订</p>
+<h2 id="1-初始化一个angular项目"><a href="#1-初始化一个angular项目" class="headerlink" title="1. 初始化一个angular项目"></a>1. 初始化一个angular项目</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng new angular-http-demo</span><br></pre></td></tr></table></figure>
 <h2 id="2-在angular中引入httpclient模块"><a href="#2-在angular中引入httpclient模块" class="headerlink" title="2. 在angular中引入httpclient模块"></a>2. 在angular中引入httpclient模块</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.module.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; BrowserModule &#125; <span class="keyword">from</span> <span class="string">'@angular/platform-browser'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; NgModule &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; AppRoutingModule &#125; <span class="keyword">from</span> <span class="string">'./app-routing.module'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AppComponent &#125; <span class="keyword">from</span> <span class="string">'./app.component'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; HttpClientModule &#125; <span class="keyword">from</span> <span class="string">'@angular/common/http'</span>;</span><br><span class="line"></span><br><span class="line">@NgModule(&#123;</span><br><span class="line">  declarations: [</span><br><span class="line">    AppComponent,</span><br><span class="line">    HttpClientModule</span><br><span class="line">  ],</span><br><span class="line">  imports: [</span><br><span class="line">    BrowserModule,</span><br><span class="line">    AppRoutingModule</span><br><span class="line">  ],</span><br><span class="line">  providers: [],</span><br><span class="line">  bootstrap: [AppComponent]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">AppModule</span> </span>&#123; &#125;</span><br></pre></td></tr></table></figure>
 <h2 id="3-生成一个service"><a href="#3-生成一个service" class="headerlink" title="3. 生成一个service"></a>3. 生成一个service</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng generate service hero</span><br></pre></td></tr></table></figure>
 <h2 id="4-生成一个hero接口"><a href="#4-生成一个hero接口" class="headerlink" title="4. 生成一个hero接口"></a>4. 生成一个hero接口</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng generate interface hero</span><br></pre></td></tr></table></figure>
@@ -142,8 +146,10 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hero.service.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; HttpClient &#125; <span class="keyword">from</span> <span class="string">'@angular/common/http'</span>;</span><br></pre></td></tr></table></figure>
 <p>在service中发起一个post请求</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hero.service.ts</span></span><br><span class="line">  <span class="keyword">async</span> addHero(hero: Hero): <span class="built_in">Promise</span>&lt;Hero&gt; &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">await</span> <span class="keyword">this</span>.http.post&lt;Hero&gt;(<span class="string">'/hero'</span>, hero).toPromise();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">      <span class="keyword">throw</span> error;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p><code>&lt;Hero&gt;</code>为TypeScript类型系统中的<a href="https://www.tslang.cn/docs/handbook/generics.html" target="_blank" rel="noopener">泛型</a></p>
-<p>HttpClient对象默认返回的是一个<code>Observable</code><a href="https://angular.cn/guide/observables" target="_blank" rel="noopener">可观察对象</a><br>所以如果想使用<code>async/await</code>就必须将<code>Observable</code>转成<code>Promise</code>对象<br>如果</p>
+<p>其中<code>&lt;Hero&gt;</code>为TypeScript类型系统中的<a href="https://www.tslang.cn/docs/handbook/generics.html" target="_blank" rel="noopener">泛型</a></p>
+<p>HttpClient对象默认返回的是一个<code>Observable</code><a href="https://angular.cn/guide/observables" target="_blank" rel="noopener">可观察对象</a><br>所以如果想使用<code>async/await</code>就必须将<code>Observable</code>转成<code>Promise</code>对象</p>
+<p>//todo 和rxjs的对比</p>
+<p>//todo http和httpclient对比</p>
 
   </div>
 </article>
